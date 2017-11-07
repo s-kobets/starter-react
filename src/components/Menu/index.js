@@ -3,7 +3,22 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actions as storeActions } from './ducks'
 
-class Menu extends PureComponent {
+const mapStateToProps = (state) => {
+  return {
+    listForm: state.stepForm.listForm,
+    activeForm: state.stepForm.activeForm
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(storeActions, dispatch)
+  }
+}
+
+@connect(mapStateToProps, mapDispatchToProps)
+
+export default class Menu extends PureComponent {
   onActive = (e) => {
     const value = e.target.getAttribute('data-list')
     this.props.actions.setActiveForm(Number(value))
@@ -23,18 +38,3 @@ class Menu extends PureComponent {
     )
   }
 }
-
-const mapStateToProps = (state) => {
-  return {
-    listForm: state.stepForm.listForm,
-    activeForm: state.stepForm.activeForm
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    actions: bindActionCreators(storeActions, dispatch)
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Menu); 

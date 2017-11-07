@@ -29,7 +29,27 @@ const renderField = ({
   </div>
 )
 
-class PersonalForm extends PureComponent {
+const mapStateToProps = (state) => {
+  return {
+    values: getFormValues('personalForm')(state),
+    activeForm: state.stepForm.activeForm
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(storeActions, dispatch)
+  }
+}
+
+@reduxForm({
+  form: 'personalForm',
+  enableReinitialize: true
+})
+
+@connect(mapStateToProps, mapDispatchToProps)
+
+export default class PersonalForm extends PureComponent {
   mySubmit = (e) => {
     e.preventDefault()
     const {invalid, actions} = this.props
@@ -52,24 +72,3 @@ class PersonalForm extends PureComponent {
 		);
 	}
 };
-const mapStateToProps = (state) => {
-  return {
-    values: getFormValues('personalForm')(state),
-    activeForm: state.stepForm.activeForm
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    actions: bindActionCreators(storeActions, dispatch)
-  }
-}
-
-
-PersonalForm = connect(mapStateToProps, mapDispatchToProps)(PersonalForm)
-
-export default reduxForm({
-  form: 'personalForm',
-  enableReinitialize: true
-})
-(PersonalForm)
